@@ -1,0 +1,940 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\title{R Notebook}
+\author{}
+\date{\vspace{-2.5em}}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={R Notebook},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(}\StringTok{"RCurl"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(}\StringTok{"rpart"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'rpart' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(}\StringTok{"rpart.plot"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'rpart.plot' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(}\StringTok{"randomForest"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'randomForest' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## randomForest 4.7-1
+\end{verbatim}
+
+\begin{verbatim}
+## Type rfNews() to see new features/changes/bug fixes.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(}\StringTok{"FNN"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'FNN' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(}\StringTok{"dplyr"}\NormalTok{)    }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'dplyr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:randomForest':
+## 
+##     combine
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(}\StringTok{\textquotesingle{}repr\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'repr' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(}\StringTok{\textquotesingle{}ggplot2\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'ggplot2'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:randomForest':
+## 
+##     margin
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(}\StringTok{"class"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'class' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'class'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:FNN':
+## 
+##     knn, knn.cv
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(}\StringTok{"e1071"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'e1071' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(}\StringTok{"scales"}\NormalTok{)  }\CommentTok{\# for percentage scales}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'scales' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(}\StringTok{"caret"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'caret' was built under R version 4.1.3
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: lattice
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rain }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"RainfallPrediction.csv"}\NormalTok{, }\AttributeTok{header =} \ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{summary}\NormalTok{(rain)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      Date             Location            MinTemp         MaxTemp     
+##  Length:145460      Length:145460      Min.   :-8.50   Min.   :-4.80  
+##  Class :character   Class :character   1st Qu.: 7.60   1st Qu.:17.90  
+##  Mode  :character   Mode  :character   Median :12.00   Median :22.60  
+##                                        Mean   :12.19   Mean   :23.22  
+##                                        3rd Qu.:16.90   3rd Qu.:28.20  
+##                                        Max.   :33.90   Max.   :48.10  
+##                                        NA's   :1485    NA's   :1261   
+##     Rainfall        Evaporation        Sunshine     WindGustDir       
+##  Min.   :  0.000   Min.   :  0.00   Min.   : 0.00   Length:145460     
+##  1st Qu.:  0.000   1st Qu.:  2.60   1st Qu.: 4.80   Class :character  
+##  Median :  0.000   Median :  4.80   Median : 8.40   Mode  :character  
+##  Mean   :  2.361   Mean   :  5.47   Mean   : 7.61                     
+##  3rd Qu.:  0.800   3rd Qu.:  7.40   3rd Qu.:10.60                     
+##  Max.   :371.000   Max.   :145.00   Max.   :14.50                     
+##  NA's   :3261      NA's   :62790    NA's   :69835                     
+##  WindGustSpeed     WindDir9am         WindDir3pm         WindSpeed9am   
+##  Min.   :  6.00   Length:145460      Length:145460      Min.   :  0.00  
+##  1st Qu.: 31.00   Class :character   Class :character   1st Qu.:  7.00  
+##  Median : 39.00   Mode  :character   Mode  :character   Median : 13.00  
+##  Mean   : 40.03                                         Mean   : 14.04  
+##  3rd Qu.: 48.00                                         3rd Qu.: 19.00  
+##  Max.   :135.00                                         Max.   :130.00  
+##  NA's   :10263                                          NA's   :1767    
+##   WindSpeed3pm    Humidity9am      Humidity3pm      Pressure9am    
+##  Min.   : 0.00   Min.   :  0.00   Min.   :  0.00   Min.   : 980.5  
+##  1st Qu.:13.00   1st Qu.: 57.00   1st Qu.: 37.00   1st Qu.:1012.9  
+##  Median :19.00   Median : 70.00   Median : 52.00   Median :1017.6  
+##  Mean   :18.66   Mean   : 68.88   Mean   : 51.54   Mean   :1017.6  
+##  3rd Qu.:24.00   3rd Qu.: 83.00   3rd Qu.: 66.00   3rd Qu.:1022.4  
+##  Max.   :87.00   Max.   :100.00   Max.   :100.00   Max.   :1041.0  
+##  NA's   :3062    NA's   :2654     NA's   :4507     NA's   :15065   
+##   Pressure3pm        Cloud9am        Cloud3pm        Temp9am     
+##  Min.   : 977.1   Min.   :0.00    Min.   :0.00    Min.   :-7.20  
+##  1st Qu.:1010.4   1st Qu.:1.00    1st Qu.:2.00    1st Qu.:12.30  
+##  Median :1015.2   Median :5.00    Median :5.00    Median :16.70  
+##  Mean   :1015.3   Mean   :4.45    Mean   :4.51    Mean   :16.99  
+##  3rd Qu.:1020.0   3rd Qu.:7.00    3rd Qu.:7.00    3rd Qu.:21.60  
+##  Max.   :1039.6   Max.   :9.00    Max.   :9.00    Max.   :40.20  
+##  NA's   :15028    NA's   :55888   NA's   :59358   NA's   :1767   
+##     Temp3pm       RainToday         RainTomorrow      
+##  Min.   :-5.40   Length:145460      Length:145460     
+##  1st Qu.:16.60   Class :character   Class :character  
+##  Median :21.10   Mode  :character   Mode  :character  
+##  Mean   :21.68                                        
+##  3rd Qu.:26.40                                        
+##  Max.   :46.70                                        
+##  NA's   :3609
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rain }\OtherTok{\textless{}{-}}\NormalTok{ rain[,}\DecValTok{2}\SpecialCharTok{:}\DecValTok{23}\NormalTok{]}
+
+\CommentTok{\# factor character{-}columns}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{ncol}\NormalTok{(rain))\{}
+    \ControlFlowTok{if}\NormalTok{(}\FunctionTok{is.character}\NormalTok{(rain[}\DecValTok{1}\NormalTok{,i]))\{}
+\NormalTok{        rain[,i] }\OtherTok{=} \FunctionTok{factor}\NormalTok{(rain[,i])}
+\NormalTok{    \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# remove NA values of the columns as desribed above}
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{MinTemp }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{MinTemp, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{MinTemp), }\FunctionTok{mean}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{MinTemp, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{))}
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{MaxTemp }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{MaxTemp, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{MaxTemp), }\FunctionTok{mean}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{MaxTemp, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{))}
+
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{Rainfall }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Rainfall, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Rainfall), }\DecValTok{0}\NormalTok{)}
+
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{Evaporation }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Evaporation, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Evaporation), }\DecValTok{0}\NormalTok{)}
+
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{Sunshine }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Sunshine, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Sunshine), }\DecValTok{0}\NormalTok{)}
+
+\FunctionTok{levels}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{WindGustDir) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{levels}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{WindGustDir), }\StringTok{"NOWIND"}\NormalTok{)}
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{WindGustDir[}\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{WindGustDir)] }\OtherTok{\textless{}{-}} \StringTok{\textquotesingle{}NOWIND\textquotesingle{}}
+
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{WindGustSpeed }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{WindGustSpeed, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{WindGustSpeed), }\DecValTok{0}\NormalTok{)}
+
+\FunctionTok{levels}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{WindDir9am) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{levels}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{WindDir9am), }\StringTok{"NOWIND"}\NormalTok{)}
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{WindDir9am[}\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{WindDir9am)] }\OtherTok{\textless{}{-}} \StringTok{\textquotesingle{}NOWIND\textquotesingle{}}
+\FunctionTok{levels}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{WindDir3pm) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{levels}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{WindDir3pm), }\StringTok{"NOWIND"}\NormalTok{)}
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{WindDir3pm[}\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{WindDir3pm)] }\OtherTok{\textless{}{-}} \StringTok{\textquotesingle{}NOWIND\textquotesingle{}}
+                          
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{WindSpeed9am }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{WindSpeed9am, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{WindSpeed9am), }\DecValTok{0}\NormalTok{)}
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{WindSpeed3pm }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{WindSpeed3pm, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{WindSpeed3pm), }\DecValTok{0}\NormalTok{)}
+
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{Humidity9am }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Humidity9am, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Humidity9am), }\FunctionTok{mean}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Humidity9am, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{))}
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{Humidity3pm }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Humidity3pm, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Humidity3pm), }\FunctionTok{mean}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Humidity3pm, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{))}
+
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{Pressure9am }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Pressure9am, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Pressure9am), }\FunctionTok{mean}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Pressure9am, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{))}
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{Pressure3pm }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Pressure3pm, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Pressure3pm), }\FunctionTok{mean}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Pressure3pm, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{))}
+
+
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{Cloud9am }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Cloud9am, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Cloud9am), }\DecValTok{0}\NormalTok{)}
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{Cloud3pm }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Cloud3pm, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Cloud3pm), }\DecValTok{0}\NormalTok{)}
+
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{Temp9am }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Temp9am, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Temp9am), }\FunctionTok{mean}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Temp9am, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{))}
+\NormalTok{rain}\SpecialCharTok{$}\NormalTok{Temp3pm }\OtherTok{=} \FunctionTok{replace}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Temp3pm, }\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Temp3pm), }\FunctionTok{mean}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Temp3pm, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{))}
+
+\NormalTok{rain }\OtherTok{\textless{}{-}}\NormalTok{ rain[}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{RainToday),]}
+
+\NormalTok{rain }\OtherTok{\textless{}{-}}\NormalTok{ rain[}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{RainTomorrow),]}
+
+\FunctionTok{summary}\NormalTok{(rain)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      Location         MinTemp         MaxTemp         Rainfall     
+##  Canberra:  3402   Min.   :-8.50   Min.   :-4.80   Min.   :  0.00  
+##  Sydney  :  3331   1st Qu.: 7.60   1st Qu.:17.90   1st Qu.:  0.00  
+##  Perth   :  3193   Median :12.00   Median :22.70   Median :  0.00  
+##  Darwin  :  3192   Mean   :12.18   Mean   :23.24   Mean   :  2.35  
+##  Hobart  :  3183   3rd Qu.:16.80   3rd Qu.:28.20   3rd Qu.:  0.80  
+##  Brisbane:  3132   Max.   :33.90   Max.   :48.10   Max.   :371.00  
+##  (Other) :121354                                                   
+##   Evaporation         Sunshine      WindGustDir    WindGustSpeed   
+##  Min.   :  0.000   Min.   : 0.00   W      : 9696   Min.   :  0.00  
+##  1st Qu.:  0.000   1st Qu.: 0.00   SE     : 9241   1st Qu.: 30.00  
+##  Median :  1.600   Median : 0.30   NOWIND : 9163   Median : 37.00  
+##  Mean   :  3.152   Mean   : 4.01   E      : 8985   Mean   : 37.39  
+##  3rd Qu.:  5.400   3rd Qu.: 8.70   N      : 8941   3rd Qu.: 46.00  
+##  Max.   :145.000   Max.   :14.50   SSE    : 8905   Max.   :135.00  
+##                                    (Other):85856                   
+##    WindDir9am      WindDir3pm     WindSpeed9am     WindSpeed3pm 
+##  N      :11266   SE     :10578   Min.   :  0.00   Min.   : 0.0  
+##  NOWIND : 9660   W      : 9810   1st Qu.:  7.00   1st Qu.:11.0  
+##  SE     : 9116   S      : 9488   Median : 13.00   Median :17.0  
+##  E      : 8977   WSW    : 9231   Mean   : 13.89   Mean   :18.3  
+##  SSE    : 8901   SW     : 9104   3rd Qu.: 19.00   3rd Qu.:24.0  
+##  NW     : 8471   SSE    : 9038   Max.   :130.00   Max.   :87.0  
+##  (Other):84396   (Other):83538                                  
+##   Humidity9am      Humidity3pm      Pressure9am      Pressure3pm    
+##  Min.   :  0.00   Min.   :  0.00   Min.   : 980.5   Min.   : 977.1  
+##  1st Qu.: 57.00   1st Qu.: 37.00   1st Qu.:1013.5   1st Qu.:1011.0  
+##  Median : 70.00   Median : 51.54   Median :1017.6   Median :1015.3  
+##  Mean   : 68.83   Mean   : 51.45   Mean   :1017.7   Mean   :1015.3  
+##  3rd Qu.: 83.00   3rd Qu.: 65.00   3rd Qu.:1021.8   3rd Qu.:1019.4  
+##  Max.   :100.00   Max.   :100.00   Max.   :1041.0   Max.   :1039.6  
+##                                                                     
+##     Cloud9am        Cloud3pm        Temp9am         Temp3pm      RainToday   
+##  Min.   :0.000   Min.   :0.000   Min.   :-7.20   Min.   :-5.40   No :109332  
+##  1st Qu.:0.000   1st Qu.:0.000   1st Qu.:12.30   1st Qu.:16.70   Yes: 31455  
+##  Median :1.000   Median :1.000   Median :16.80   Median :21.30               
+##  Mean   :2.775   Mean   :2.707   Mean   :16.99   Mean   :21.69               
+##  3rd Qu.:6.000   3rd Qu.:6.000   3rd Qu.:21.50   3rd Qu.:26.30               
+##  Max.   :9.000   Max.   :9.000   Max.   :40.20   Max.   :46.70               
+##                                                                              
+##  RainTomorrow
+##  No :109586  
+##  Yes: 31201  
+##              
+##              
+##              
+##              
+## 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{locations }\OtherTok{=} \FunctionTok{unique}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{Location)}
+
+\NormalTok{averageLocationRainfall }\OtherTok{=} \FunctionTok{c}\NormalTok{()}
+\NormalTok{index }\OtherTok{=} \DecValTok{1}
+\ControlFlowTok{for}\NormalTok{ (location }\ControlFlowTok{in}\NormalTok{ locations)\{}
+\NormalTok{    averageLocationRainfall[index] }\OtherTok{=} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(}\FunctionTok{subset}\NormalTok{(rain, rain}\SpecialCharTok{$}\NormalTok{Location }\SpecialCharTok{==}\NormalTok{ location)}\SpecialCharTok{$}\NormalTok{Rainfall), }\DecValTok{2}\NormalTok{)}
+\NormalTok{    index }\OtherTok{=}\NormalTok{ index }\SpecialCharTok{+}\DecValTok{1}
+\NormalTok{\}}
+
+\CommentTok{\# convert to dataframe}
+\NormalTok{locationRainfalldf }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(locations, averageLocationRainfall, }\AttributeTok{stringsAsFactors=}\ConstantTok{FALSE}\NormalTok{)}
+
+\CommentTok{\# graphs}
+\FunctionTok{options}\NormalTok{(}\AttributeTok{repr.plot.width =} \DecValTok{15}\NormalTok{, }\AttributeTok{repr.plot.height =} \DecValTok{15}\NormalTok{)  }\CommentTok{\# plot size}
+\CommentTok{\#barplot(locationRainfalldf$averageLocationRainfall, }
+\CommentTok{\#        names.arg = locationRainfalldf$locations, }
+\CommentTok{\#        border = "steelblue",}
+\CommentTok{\#        main = "Average rainfall by location",}
+\CommentTok{\#        xlab = "rainfall(mm)",}
+\CommentTok{\#        las=1, }
+\CommentTok{\#        horiz=TRUE)}
+
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ locationRainfalldf, }
+        \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ locations, }\AttributeTok{y =}\NormalTok{ averageLocationRainfall),}
+        \AttributeTok{stat=}\StringTok{\textquotesingle{}identity\textquotesingle{}}\NormalTok{, }
+        \AttributeTok{position =} \StringTok{\textquotesingle{}dodge\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+} 
+ \FunctionTok{geom\_col}\NormalTok{() }\SpecialCharTok{+} 
+ \FunctionTok{geom\_text}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label =}\NormalTok{ averageLocationRainfall), }\AttributeTok{position =} \FunctionTok{position\_dodge}\NormalTok{(}\AttributeTok{width=}\FloatTok{0.9}\NormalTok{), }\AttributeTok{vjust=}\SpecialCharTok{{-}}\FloatTok{0.25}\NormalTok{) }\SpecialCharTok{+}
+ \FunctionTok{xlab}\NormalTok{(}\StringTok{"Locations"}\NormalTok{) }\SpecialCharTok{+} 
+ \FunctionTok{ylab}\NormalTok{(}\StringTok{"Average rainfall(mm)"}\NormalTok{) }\SpecialCharTok{+}
+ \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{90}\NormalTok{, }\AttributeTok{vjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{hjust=}\DecValTok{1}\NormalTok{, }\AttributeTok{size =} \DecValTok{18}\NormalTok{),}
+       \AttributeTok{axis.text.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{20}\NormalTok{),}
+       \AttributeTok{axis.title.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{30}\NormalTok{),}
+       \AttributeTok{axis.title.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{30}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{EDA_review-3_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ rain) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Pressure9am , }\AttributeTok{y =}\NormalTok{ Pressure3pm), }\AttributeTok{alpha=}\FloatTok{0.3}\NormalTok{) }\SpecialCharTok{+}
+\FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Pressure9am and Pressure3pm"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{EDA_review-3_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ rain) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Temp9am , }\AttributeTok{y =}\NormalTok{ Temp3pm), }\AttributeTok{alpha=}\FloatTok{0.3}\NormalTok{) }\SpecialCharTok{+}
+\FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Temp9am and Temp3pm"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{EDA_review-3_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(rain, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{ Cloud9am,  }\AttributeTok{group=}\NormalTok{RainToday)) }\SpecialCharTok{+} 
+    \FunctionTok{geom\_bar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{y =}\NormalTok{ ..prop.., }\AttributeTok{fill =} \FunctionTok{factor}\NormalTok{(..x..)), }\AttributeTok{stat=}\StringTok{"count"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_text}\NormalTok{(}\FunctionTok{aes}\NormalTok{( }\AttributeTok{label =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{percent}\NormalTok{(..prop..),}
+                   \AttributeTok{y=}\NormalTok{ ..prop.. ), }\AttributeTok{stat=} \StringTok{"count"}\NormalTok{, }\AttributeTok{vjust =} \SpecialCharTok{{-}}\NormalTok{.}\DecValTok{5}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{labs}\NormalTok{(}\AttributeTok{y =} \StringTok{"Percent"}\NormalTok{, }\AttributeTok{fill=}\StringTok{"Cloud Level"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{facet\_grid}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{RainToday) }\SpecialCharTok{+}
+    \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\NormalTok{percent)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{EDA_review-3_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(rain, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{ Cloud3pm,  }\AttributeTok{group=}\NormalTok{RainToday)) }\SpecialCharTok{+} 
+    \FunctionTok{geom\_bar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{y =}\NormalTok{ ..prop.., }\AttributeTok{fill =} \FunctionTok{factor}\NormalTok{(..x..)), }\AttributeTok{stat=}\StringTok{"count"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_text}\NormalTok{(}\FunctionTok{aes}\NormalTok{( }\AttributeTok{label =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{percent}\NormalTok{(..prop..),}
+                   \AttributeTok{y=}\NormalTok{ ..prop.. ), }\AttributeTok{stat=} \StringTok{"count"}\NormalTok{, }\AttributeTok{vjust =} \SpecialCharTok{{-}}\NormalTok{.}\DecValTok{5}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{labs}\NormalTok{(}\AttributeTok{y =} \StringTok{"Percent"}\NormalTok{, }\AttributeTok{fill=}\StringTok{"cloud level"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{facet\_grid}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{RainToday) }\SpecialCharTok{+}
+    \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\NormalTok{percent)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{EDA_review-3_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{NoNo }\OtherTok{\textless{}{-}} \FunctionTok{percent}\NormalTok{(}\FunctionTok{sum}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{RainToday }\SpecialCharTok{==} \StringTok{"No"} \SpecialCharTok{\&}\NormalTok{ rain}\SpecialCharTok{$}\NormalTok{RainTomorrow }\SpecialCharTok{==} \StringTok{"No"}\NormalTok{) }\SpecialCharTok{/} \FunctionTok{length}\NormalTok{(rain[,}\DecValTok{1}\NormalTok{]), }\AttributeTok{accuracy =}\NormalTok{ .}\DecValTok{001}\NormalTok{) }
+\NormalTok{YesYes }\OtherTok{\textless{}{-}} \FunctionTok{percent}\NormalTok{(}\FunctionTok{sum}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{RainToday }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\&}\NormalTok{ rain}\SpecialCharTok{$}\NormalTok{RainTomorrow }\SpecialCharTok{==} \StringTok{"Yes"}\NormalTok{) }\SpecialCharTok{/} \FunctionTok{length}\NormalTok{(rain[,}\DecValTok{1}\NormalTok{]), }\AttributeTok{accuracy =}\NormalTok{ .}\DecValTok{001}\NormalTok{) }
+\NormalTok{NoYes }\OtherTok{\textless{}{-}} \FunctionTok{percent}\NormalTok{(}\FunctionTok{sum}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{RainToday }\SpecialCharTok{==} \StringTok{"No"} \SpecialCharTok{\&}\NormalTok{ rain}\SpecialCharTok{$}\NormalTok{RainTomorrow }\SpecialCharTok{==} \StringTok{"Yes"}\NormalTok{) }\SpecialCharTok{/} \FunctionTok{length}\NormalTok{(rain[,}\DecValTok{1}\NormalTok{]), }\AttributeTok{accuracy =}\NormalTok{ .}\DecValTok{001}\NormalTok{) }
+\NormalTok{YesNo }\OtherTok{\textless{}{-}} \FunctionTok{percent}\NormalTok{(}\FunctionTok{sum}\NormalTok{(rain}\SpecialCharTok{$}\NormalTok{RainToday }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\&}\NormalTok{ rain}\SpecialCharTok{$}\NormalTok{RainTomorrow }\SpecialCharTok{==} \StringTok{"No"}\NormalTok{) }\SpecialCharTok{/} \FunctionTok{length}\NormalTok{(rain[,}\DecValTok{1}\NormalTok{]), }\AttributeTok{accuracy =}\NormalTok{ .}\DecValTok{001}\NormalTok{)}
+
+\NormalTok{rainTodayTomorrow }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{group =} \FunctionTok{c}\NormalTok{(}\StringTok{"NoYes"}\NormalTok{, }\StringTok{"YesYes"}\NormalTok{, }\StringTok{"NoNo"}\NormalTok{, }\StringTok{"YesNo"}\NormalTok{),}
+  \AttributeTok{value =} \FunctionTok{c}\NormalTok{(NoYes, YesYes, NoNo, YesNo)}
+\NormalTok{  )}
+
+\NormalTok{rainTodayTomorrow}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    group   value
+## 1  NoYes 11.794%
+## 2 YesYes 10.368%
+## 3   NoNo 65.864%
+## 4  YesNo 11.974%
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rain\_plot5 }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(rain)}
+\NormalTok{rain\_plot5}\SpecialCharTok{$}\NormalTok{Sunshine}\OtherTok{\textless{}{-}}\FunctionTok{cut}\NormalTok{(rain\_plot5}\SpecialCharTok{$}\NormalTok{Sunshine, }\FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{16}\NormalTok{, }\DecValTok{1}\NormalTok{), }\AttributeTok{right=}\ConstantTok{FALSE}\NormalTok{)}
+
+\FunctionTok{ggplot}\NormalTok{(rain\_plot5)}\SpecialCharTok{+} 
+    \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{ Sunshine, }\AttributeTok{y=}\NormalTok{ ..count.., }\AttributeTok{fill =}\NormalTok{ RainToday), }
+             \AttributeTok{stat =} \StringTok{"count"}\NormalTok{, }\AttributeTok{position =} \StringTok{"fill"}\NormalTok{)}\SpecialCharTok{+}
+    \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Hours of sunshine"}\NormalTok{, }\AttributeTok{y=}\StringTok{"Percent"}\NormalTok{)}\SpecialCharTok{+}
+    \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{percent\_format}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{EDA_review-3_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# copy the data frame}
+\NormalTok{rain\_DT}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(rain)}
+
+\NormalTok{num\_samples }\OtherTok{=} \FunctionTok{dim}\NormalTok{(rain\_DT)[}\DecValTok{1}\NormalTok{]}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{sampling.rate }\OtherTok{=} \FloatTok{0.8}
+\NormalTok{training }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{num\_samples, sampling.rate }\SpecialCharTok{*}\NormalTok{ num\_samples, }\AttributeTok{replace=}\ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{trainingSet }\OtherTok{\textless{}{-}}\NormalTok{ rain\_DT[training, ]}
+\NormalTok{testing }\OtherTok{\textless{}{-}} \FunctionTok{setdiff}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{num\_samples,training)}
+\NormalTok{testingSet }\OtherTok{\textless{}{-}}\NormalTok{ rain\_DT[testing, ]}
+
+\CommentTok{\#Fit a decision tree model using the training data}
+\NormalTok{decTreeModel }\OtherTok{\textless{}{-}} \FunctionTok{rpart}\NormalTok{(RainTomorrow }\SpecialCharTok{\textasciitilde{}}\NormalTok{ .,}\AttributeTok{data=}\NormalTok{trainingSet, }\AttributeTok{method =} \StringTok{"class"}\NormalTok{)}
+
+\CommentTok{\#Plot the decision tree model}
+\FunctionTok{rpart.plot}\NormalTok{(decTreeModel)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{EDA_review-3_files/figure-latex/unnamed-chunk-12-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Find cp value to prevent overfitting}
+\FunctionTok{plotcp}\NormalTok{(decTreeModel)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{EDA_review-3_files/figure-latex/unnamed-chunk-12-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Based on the cp plot, we choose cp value =0.018}
+\NormalTok{pruned\_decTreeModel }\OtherTok{=} \FunctionTok{prune}\NormalTok{(decTreeModel, }\AttributeTok{cp=}\FloatTok{0.018}\NormalTok{)}
+
+\CommentTok{\# Plot the pruned decision tree model}
+\FunctionTok{rpart.plot}\NormalTok{(pruned\_decTreeModel)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{EDA_review-3_files/figure-latex/unnamed-chunk-12-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{predictedLabels}\OtherTok{\textless{}{-}}\FunctionTok{predict}\NormalTok{(pruned\_decTreeModel, testingSet, }\AttributeTok{type =} \StringTok{"class"}\NormalTok{)}
+\CommentTok{\# Get the number of data points in the test set}
+\NormalTok{sizeTestSet }\OtherTok{=} \FunctionTok{dim}\NormalTok{(testingSet)[}\DecValTok{1}\NormalTok{]}
+\CommentTok{\# Get the number of data points that are misclassified}
+\NormalTok{error }\OtherTok{=} \FunctionTok{sum}\NormalTok{(predictedLabels }\SpecialCharTok{!=}\NormalTok{ testingSet}\SpecialCharTok{$}\NormalTok{RainTomorrow)}
+\CommentTok{\# Calculate the misclassification rate}
+\NormalTok{accuracy\_rate }\OtherTok{=} \DecValTok{1}\SpecialCharTok{{-}}\NormalTok{error}\SpecialCharTok{/}\NormalTok{sizeTestSet}
+\NormalTok{accuracy\_rate}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.8283969
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Get the data points that are misclassified}
+\NormalTok{IsWrong }\OtherTok{=}\NormalTok{ (predictedLabels }\SpecialCharTok{!=}\NormalTok{ testingSet}\SpecialCharTok{$}\NormalTok{RainTomorrow)}
+\CommentTok{\# Get the data points that are classified as Happy or Sad}
+\NormalTok{IsYes }\OtherTok{=}\NormalTok{ (predictedLabels }\SpecialCharTok{==} \StringTok{\textquotesingle{}Yes\textquotesingle{}}\NormalTok{)}
+\NormalTok{IsNo }\OtherTok{=}\NormalTok{ (predictedLabels }\SpecialCharTok{==} \StringTok{\textquotesingle{}No\textquotesingle{}}\NormalTok{)}
+\CommentTok{\# Get the data points that are misclassified and are classified as Happy}
+\NormalTok{IsWrongAndYes }\OtherTok{=}\NormalTok{ (IsWrong }\SpecialCharTok{\&}\NormalTok{ IsYes)}
+\NormalTok{errorYes }\OtherTok{=} \FunctionTok{sum}\NormalTok{(IsWrongAndYes)}
+\NormalTok{IsWrongAndNo }\OtherTok{=}\NormalTok{ (IsWrong }\SpecialCharTok{\&}\NormalTok{ IsNo)}
+\NormalTok{errorNo }\OtherTok{=} \FunctionTok{sum}\NormalTok{(IsWrongAndNo)}
+\CommentTok{\# Calculate the misclassification rate}
+\NormalTok{DT\_misclassification\_rate }\OtherTok{=}\NormalTok{ (errorYes}\SpecialCharTok{+}\NormalTok{errorNo)}\SpecialCharTok{/}\NormalTok{sizeTestSet}
+\NormalTok{DT\_misclassification\_rate }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1716031
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# confusion matrix}
+\NormalTok{DT\_FN }\OtherTok{=} \FunctionTok{confusionMatrix}\NormalTok{(predictedLabels, testingSet}\SpecialCharTok{$}\NormalTok{RainTomorrow)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{RandForestModel }\OtherTok{\textless{}{-}} \FunctionTok{randomForest}\NormalTok{(RainTomorrow }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ., }\AttributeTok{data =}\NormalTok{ trainingSet, }\AttributeTok{ntree=}\DecValTok{200}\NormalTok{, }\AttributeTok{importance=}\ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(RandForestModel)}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"top"}\NormalTok{, }\FunctionTok{colnames}\NormalTok{(RandForestModel}\SpecialCharTok{$}\NormalTok{err.rate),}\AttributeTok{fill=}\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{EDA_review-3_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{RandForestModel}\SpecialCharTok{$}\NormalTok{confusion}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        No   Yes class.error
+## No  82324  5363  0.06116072
+## Yes 10408 14534  0.41728811
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Perform predictions for the testing set}
+\NormalTok{predictedLabels}\OtherTok{\textless{}{-}}\FunctionTok{predict}\NormalTok{(RandForestModel, testingSet)}
+\CommentTok{\# Get the number of data points in the test set}
+\NormalTok{sizeTestSet }\OtherTok{=} \FunctionTok{dim}\NormalTok{(testingSet)[}\DecValTok{1}\NormalTok{]}
+\CommentTok{\# Get the number of data points that are misclassified}
+\NormalTok{error }\OtherTok{=} \FunctionTok{sum}\NormalTok{(predictedLabels }\SpecialCharTok{!=}\NormalTok{ testingSet}\SpecialCharTok{$}\NormalTok{RainTomorrow)}
+\CommentTok{\# Calculate the misclassification rate}
+\NormalTok{RF\_misclassification\_rate }\OtherTok{=}\NormalTok{ error}\SpecialCharTok{/}\NormalTok{sizeTestSet}
+\NormalTok{RF\_misclassification\_rate}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1419845
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{importance}\NormalTok{(RandForestModel)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                      No         Yes MeanDecreaseAccuracy MeanDecreaseGini
+## Location      131.01782 -43.9789896            127.89967        3751.7248
+## MinTemp        39.62339  -0.1084953             41.65485        1383.9870
+## MaxTemp        26.79329  -1.4356533             29.50381        1344.9626
+## Rainfall       35.61850  32.6220413             43.01217        1925.8293
+## Evaporation    24.97334  -7.3520395             25.47742         692.7578
+## Sunshine       23.91901  30.0724800             30.14827        1373.6690
+## WindGustDir    92.38179 -39.7754900             76.52742        2243.4928
+## WindGustSpeed  58.17131  31.2158010             64.76961        1830.5383
+## WindDir9am     60.08336 -17.6090527             52.01949        2369.7725
+## WindDir3pm     81.40578 -25.7458025             68.56059        2286.3964
+## WindSpeed9am   34.99042  -7.9889892             33.59038         912.7586
+## WindSpeed3pm   42.81379  -7.6823113             42.28412        1002.9814
+## Humidity9am    29.99166  14.1418825             32.92485        1801.0823
+## Humidity3pm    59.69052  87.9217027             76.50067        6366.7776
+## Pressure9am    45.56172   1.7475127             47.22899        1749.2670
+## Pressure3pm    63.65358  15.2130317             68.41882        2043.3783
+## Cloud9am       17.99598   7.7379891             19.60599         722.0691
+## Cloud3pm       35.72016  19.9030471             41.02956        1350.9517
+## Temp9am        46.51817  -8.2562594             48.06334        1293.0571
+## Temp3pm        24.57999   5.9062156             26.58100        1448.9077
+## RainToday      12.26458  14.1164982             14.28829         887.9014
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{varImpPlot}\NormalTok{(RandForestModel,}\AttributeTok{type=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{EDA_review-3_files/figure-latex/unnamed-chunk-14-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# confusion matrix}
+\NormalTok{RF\_FN }\OtherTok{=} \FunctionTok{confusionMatrix}\NormalTok{(predictedLabels, testingSet}\SpecialCharTok{$}\NormalTok{RainTomorrow)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# copy the data frame}
+\NormalTok{rain\_LR}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(rain)}
+
+\CommentTok{\# k fold crossval}
+\ControlFlowTok{for}\NormalTok{ (seed }\ControlFlowTok{in} \FunctionTok{c}\NormalTok{(}\DecValTok{123}\NormalTok{, }\DecValTok{456}\NormalTok{, }\DecValTok{666}\NormalTok{, }\DecValTok{420}\NormalTok{, }\DecValTok{888}\NormalTok{))\{}
+    
+    \FunctionTok{set.seed}\NormalTok{(seed)}
+    
+\NormalTok{    num\_samples }\OtherTok{=} \FunctionTok{dim}\NormalTok{(rain\_LR)[}\DecValTok{1}\NormalTok{]}
+\NormalTok{    sampling.rate }\OtherTok{=} \FloatTok{0.8}
+\NormalTok{    training }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{num\_samples, sampling.rate }\SpecialCharTok{*}\NormalTok{ num\_samples, }\AttributeTok{replace=}\ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{    trainingSet }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(rain\_LR[training, ])}
+\NormalTok{    testing }\OtherTok{\textless{}{-}} \FunctionTok{setdiff}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{num\_samples,training)}
+\NormalTok{    testingSet }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(rain\_LR[testing, ])}
+
+\NormalTok{    LogisticReg }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(RainTomorrow }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ., }\AttributeTok{data =}\NormalTok{ trainingSet, }\AttributeTok{family =} \FunctionTok{binomial}\NormalTok{(logit))}
+\NormalTok{    predictions }\OtherTok{\textless{}{-}}\FunctionTok{predict}\NormalTok{(LogisticReg, testingSet, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+\NormalTok{    sizeTestSet }\OtherTok{=} \FunctionTok{dim}\NormalTok{(testingSet)[}\DecValTok{1}\NormalTok{]}
+\NormalTok{    predictedLabels}\OtherTok{=} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{,sizeTestSet)}
+\NormalTok{    predictedLabels}\OtherTok{=}\FunctionTok{ifelse}\NormalTok{(predictions }\SpecialCharTok{\textgreater{}} \FloatTok{0.5}\NormalTok{,}\StringTok{\textquotesingle{}Yes\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}No\textquotesingle{}}\NormalTok{)}
+\NormalTok{    error }\OtherTok{=} \FunctionTok{sum}\NormalTok{(predictedLabels }\SpecialCharTok{!=}\NormalTok{ testingSet}\SpecialCharTok{$}\NormalTok{RainTomorrow)}
+
+    \CommentTok{\# Calculate the misclassification rate}
+\NormalTok{    LR\_misclassification\_rate }\OtherTok{=}\NormalTok{ error}\SpecialCharTok{/}\NormalTok{sizeTestSet}
+    \CommentTok{\# Display the misclassification rate}
+    \FunctionTok{print}\NormalTok{(LR\_misclassification\_rate) }\CommentTok{\# }
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.150792
+## [1] 0.1537041
+## [1] 0.146992
+## [1] 0.1484125
+## [1] 0.1465658
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# use caret and compute a confusion matrix}
+\NormalTok{LR\_FN }\OtherTok{=} \FunctionTok{confusionMatrix}\NormalTok{(}\AttributeTok{data =} \FunctionTok{as.factor}\NormalTok{(predictedLabels), }\AttributeTok{reference =}\NormalTok{ testingSet}\SpecialCharTok{$}\NormalTok{RainTomorrow)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# copy the data frame}
+\NormalTok{rain\_KNN}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(rain)}
+
+\CommentTok{\# normalize numeric column}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{ (}\FunctionTok{ncol}\NormalTok{(rain\_KNN)}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{))\{}
+    \ControlFlowTok{if}\NormalTok{(}\FunctionTok{is.numeric}\NormalTok{(rain\_KNN[}\DecValTok{1}\NormalTok{,i]))\{}
+\NormalTok{        rain\_KNN[,i] }\OtherTok{=}\NormalTok{ (rain\_KNN[,i] }\SpecialCharTok{{-}} \FunctionTok{mean}\NormalTok{(rain\_KNN[,i])) }\SpecialCharTok{/} \FunctionTok{sd}\NormalTok{(rain\_KNN[,i])}
+\NormalTok{    \}}
+  
+\NormalTok{\}}
+
+\CommentTok{\# convert factor column to char}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{ (}\FunctionTok{ncol}\NormalTok{(rain\_KNN)}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{))\{}
+    \ControlFlowTok{if}\NormalTok{(}\FunctionTok{is.factor}\NormalTok{(rain\_KNN[}\DecValTok{1}\NormalTok{,i]))\{}
+\NormalTok{        rain\_KNN[,i] }\OtherTok{\textless{}{-}} \FunctionTok{as.integer}\NormalTok{(rain\_KNN[,i])}
+\NormalTok{    \}}
+  
+\NormalTok{\}}
+\FunctionTok{summary}\NormalTok{(rain\_KNN)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     Location        MinTemp            MaxTemp            Rainfall      
+##  Min.   : 1.00   Min.   :-3.23543   Min.   :-3.94486   Min.   :-0.2776  
+##  1st Qu.:12.00   1st Qu.:-0.71714   1st Qu.:-0.75071   1st Qu.:-0.2776  
+##  Median :25.00   Median :-0.02891   Median :-0.07529   Median :-0.2776  
+##  Mean   :24.72   Mean   : 0.00000   Mean   : 0.00000   Mean   : 0.0000  
+##  3rd Qu.:37.00   3rd Qu.: 0.72188   3rd Qu.: 0.69862   3rd Qu.:-0.1831  
+##  Max.   :49.00   Max.   : 3.39659   Max.   : 3.49878   Max.   :43.5490  
+##   Evaporation         Sunshine        WindGustDir     WindGustSpeed    
+##  Min.   :-0.7552   Min.   :-0.8542   Min.   : 1.000   Min.   :-2.2791  
+##  1st Qu.:-0.7552   1st Qu.:-0.8542   1st Qu.: 5.000   1st Qu.:-0.4502  
+##  Median :-0.3719   Median :-0.7903   Median :10.000   Median :-0.0235  
+##  Mean   : 0.0000   Mean   : 0.0000   Mean   : 9.249   Mean   : 0.0000  
+##  3rd Qu.: 0.5385   3rd Qu.: 0.9992   3rd Qu.:14.000   3rd Qu.: 0.5251  
+##  Max.   :33.9837   Max.   : 2.2348   Max.   :17.000   Max.   : 5.9507  
+##    WindDir9am       WindDir3pm      WindSpeed9am       WindSpeed3pm    
+##  Min.   : 1.000   Min.   : 1.000   Min.   :-1.55413   Min.   :-2.0187  
+##  1st Qu.: 4.000   1st Qu.: 5.000   1st Qu.:-0.77067   1st Qu.:-0.8050  
+##  Median : 9.000   Median : 9.000   Median :-0.09913   Median :-0.1430  
+##  Mean   : 8.898   Mean   : 8.968   Mean   : 0.00000   Mean   : 0.0000  
+##  3rd Qu.:13.000   3rd Qu.:13.000   3rd Qu.: 0.57241   3rd Qu.: 0.6293  
+##  Max.   :17.000   Max.   :17.000   Max.   :12.99589   Max.   : 7.5805  
+##   Humidity9am        Humidity3pm         Pressure9am        Pressure3pm      
+##  Min.   :-3.63001   Min.   :-2.504093   Min.   :-5.50498   Min.   :-5.71008  
+##  1st Qu.:-0.62379   1st Qu.:-0.703341   1st Qu.:-0.61550   1st Qu.:-0.63715  
+##  Median : 0.06184   Median : 0.004263   Median :-0.00062   Median :-0.00028  
+##  Mean   : 0.00000   Mean   : 0.000000   Mean   : 0.00000   Mean   : 0.00000  
+##  3rd Qu.: 0.74747   3rd Qu.: 0.659390   3rd Qu.: 0.61428   3rd Qu.: 0.61986  
+##  Max.   : 1.64407   Max.   : 2.362804   Max.   : 3.45906   Max.   : 3.64267  
+##     Cloud9am          Cloud3pm          Temp9am            Temp3pm        
+##  Min.   :-0.8858   Min.   :-0.8874   Min.   :-3.73208   Min.   :-3.94205  
+##  1st Qu.:-0.8858   1st Qu.:-0.8874   1st Qu.:-0.72322   1st Qu.:-0.72648  
+##  Median :-0.5665   Median :-0.5596   Median :-0.02887   Median :-0.05718  
+##  Mean   : 0.0000   Mean   : 0.0000   Mean   : 0.00000   Mean   : 0.00000  
+##  3rd Qu.: 1.0295   3rd Qu.: 1.0798   3rd Qu.: 0.69634   3rd Qu.: 0.67032  
+##  Max.   : 1.9872   Max.   : 2.0635   Max.   : 3.58176   Max.   : 3.63853  
+##    RainToday     RainTomorrow
+##  Min.   :1.000   No :109586  
+##  1st Qu.:1.000   Yes: 31201  
+##  Median :1.000               
+##  Mean   :1.223               
+##  3rd Qu.:1.000               
+##  Max.   :2.000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Create Training and Testing Sets}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{num\_samples }\OtherTok{=} \FunctionTok{dim}\NormalTok{(rain\_KNN)[}\DecValTok{1}\NormalTok{]}
+\NormalTok{sampling.rate }\OtherTok{=} \FloatTok{0.8}
+\NormalTok{training }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{num\_samples, sampling.rate }\SpecialCharTok{*}\NormalTok{ num\_samples, }\AttributeTok{replace=}\ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{trainingSet }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(rain\_KNN[training, ])}
+\NormalTok{testing }\OtherTok{\textless{}{-}} \FunctionTok{setdiff}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{num\_samples,training)}
+\NormalTok{testingSet }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(rain\_KNN[testing, ])}
+\CommentTok{\# Get the features of the training set}
+\NormalTok{trainingfeatures }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(trainingSet, }\AttributeTok{select=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{RainTomorrow))}
+\CommentTok{\# Get the labels of the training set}
+\NormalTok{traininglabels }\OtherTok{\textless{}{-}}\NormalTok{ trainingSet}\SpecialCharTok{$}\NormalTok{RainTomorrow}
+\CommentTok{\# Get the features of the testing set}
+\NormalTok{testingfeatures }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(testingSet, }\AttributeTok{select=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{RainTomorrow))}
+\CommentTok{\# Get the labels of the training set}
+\NormalTok{testinglabels }\OtherTok{\textless{}{-}}\NormalTok{ testingSet}\SpecialCharTok{$}\NormalTok{RainTomorrow}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{3}\SpecialCharTok{:}\DecValTok{7}\NormalTok{)\{}
+    \CommentTok{\# call KNN}
+\NormalTok{    predictedLabels }\OtherTok{=} \FunctionTok{knn}\NormalTok{(trainingfeatures,testingfeatures,traininglabels,}\AttributeTok{k=}\NormalTok{i)}
+
+    \CommentTok{\# Get the number of data points in the data set}
+\NormalTok{    sizeTestSet }\OtherTok{=} \FunctionTok{dim}\NormalTok{(testingSet)[}\DecValTok{1}\NormalTok{]}
+    \CommentTok{\# Get the number of data points that are misclassified}
+\NormalTok{    error }\OtherTok{=} \FunctionTok{sum}\NormalTok{(predictedLabels }\SpecialCharTok{!=}\NormalTok{ testingSet}\SpecialCharTok{$}\NormalTok{RainTomorrow)}
+    \CommentTok{\# Calculate the misclassification rate}
+\NormalTok{    KNN\_misclassification\_rate }\OtherTok{=}\NormalTok{ error}\SpecialCharTok{/}\NormalTok{sizeTestSet}
+    \CommentTok{\# Display the misclassification rate}
+    \FunctionTok{print}\NormalTok{(i) }\CommentTok{\# }
+    \FunctionTok{print}\NormalTok{( KNN\_misclassification\_rate) }\CommentTok{\# }
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3
+## [1] 0.1800909
+## [1] 4
+## [1] 0.181689
+## [1] 5
+## [1] 0.1700405
+## [1] 6
+## [1] 0.1722423
+## [1] 7
+## [1] 0.1667732
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# when k = 7, misclassification rate is the lowest}
+
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\CommentTok{\# call KNN}
+\NormalTok{predictedLabels }\OtherTok{=} \FunctionTok{knn}\NormalTok{(trainingfeatures,testingfeatures,traininglabels,}\AttributeTok{k=}\DecValTok{7}\NormalTok{)}
+
+\CommentTok{\# Get the number of data points in the data set}
+\NormalTok{sizeTestSet }\OtherTok{=} \FunctionTok{dim}\NormalTok{(testingSet)[}\DecValTok{1}\NormalTok{]}
+\CommentTok{\# Get the number of data points that are misclassified}
+\NormalTok{error }\OtherTok{=} \FunctionTok{sum}\NormalTok{(predictedLabels }\SpecialCharTok{!=}\NormalTok{ testingSet}\SpecialCharTok{$}\NormalTok{RainTomorrow)}
+\CommentTok{\# Calculate the misclassification rate}
+\NormalTok{KNN\_misclassification\_rate }\OtherTok{=}\NormalTok{ error}\SpecialCharTok{/}\NormalTok{sizeTestSet}
+\CommentTok{\# Display the misclassification rate}
+
+\FunctionTok{print}\NormalTok{( KNN\_misclassification\_rate) }\CommentTok{\# }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1668087
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{KNN\_FN }\OtherTok{=} \FunctionTok{confusionMatrix}\NormalTok{(}\AttributeTok{data =} \FunctionTok{as.factor}\NormalTok{(predictedLabels), }\AttributeTok{reference =}\NormalTok{ testingSet}\SpecialCharTok{$}\NormalTok{RainTomorrow)}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}

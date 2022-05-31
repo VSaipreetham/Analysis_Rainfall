@@ -1,0 +1,427 @@
+print("Foundation of data analysis Project")
+print("Analysis of Rainfall")
+print(" V SAI PREETHAM 19BCE1434")
+setwd("C:/Users/Sai Preetham/Desktop/FDA_Project")
+data1=read.csv("RainfallPrediction.csv")
+View(data1)
+#Displays the Dimensions of the data
+dim(data1)
+#Summarizing the data
+summary(data1)
+#Handling Missing Values
+sum(is.na(data1))
+colSums(is.na(data1))
+max(colSums(is.na(data1)))
+#Removing the Evaporation and sunshine values
+data1=data1[,-c(6,7,18,19)]
+dim(data1)
+View(data1)
+#Removing NA Values in all the columns
+#Checking NA Values
+colSums(is.na(data1))
+#1.Removing NA Values in Min Temp using KNN imputation or mean imputatation if we wanted
+#KNN Imputation
+#library(VIM)
+#?kNN()
+#Projdata=kNN(data1)
+#View(Projdata)
+data1$MinTemp[is.na(data1$MinTemp)]<-mean(data1$MinTemp,na.rm=TRUE)
+#2.Removing NA Values in Max Temp using
+data1$MinTemp[is.na(data1$MinTemp)]<-mean(data1$MinTemp,na.rm=TRUE)
+#3.Removing NA Values in Rainfall Temp using
+data1$MaxTemp[is.na(data1$MaxTemp)]<-mean(data1$MaxTemp,na.rm=TRUE)
+#8.Removing NA Values in Windspeed9am using
+data1$WindSpeed9am[is.na(data1$WindSpeed9am)]<-mean(data1$WindSpeed9am,na.rm=TRUE)
+#9.Removing NA Values in WindSpeed3pm using
+data1$WindSpeed3pm[is.na(data1$WindSpeed3pm)]<-mean(data1$WindSpeed3pm,na.rm=TRUE)
+#10.Removing NA Values in Humidity9am using
+data1$Humidity9am[is.na(data1$Humidity9am)]<-mean(data1$Humidity9am,na.rm=TRUE)
+#11.Removing NA Values in Humidity3pm using
+data1$Humidity3pm[is.na(data1$Humidity3pm)]<-mean(data1$Humidity3pm,na.rm=TRUE)
+#12.Removing NA Values in Pressure9am using
+data1$Pressure9am[is.na(data1$Pressure9am)]<-mean(data1$Pressure9am,na.rm=TRUE)
+#13.Removing NA Values in Pressure3pm using
+data1$Pressure3pm[is.na(data1$Pressure3pm)]<-mean(data1$Pressure3pm,na.rm=TRUE)
+#14.Removing NA Values in Temp9am using
+data1$Temp9am[is.na(data1$Temp9am)]<-mean(data1$Temp9am,na.rm=TRUE)
+#15.Removing NA Values in Temp3pm using
+data1$Temp3pm[is.na(data1$Temp3pm)]<-mean(data1$Temp3pm,na.rm=TRUE)
+#16.Removing NA Values in Rainfall using
+data1$Rainfall[is.na(data1$Rainfall)]<-mean(data1$Rainfall,na.rm=TRUE)
+#17.Removing NA Values in WindGustSpeed using
+data1$WindGustSpeed[is.na(data1$WindGustSpeed)]<-mean(data1$WindGustSpeed,na.rm=TRUE)
+#18.Removing NA Values in Windspeedat9am using
+data1$WindSpeed9am[is.na(data1$WindSpeed9am)]<-mean(data1$WindSpeed9am,na.rm=TRUE)
+#19.Removing NA Values in Windspeedat3pm using
+data1$WindSpeed3pm[is.na(data1$WindSpeed3pm)]<-(mean(data1$WindSpeed3pm,na.rm=TRUE))
+
+data1$RainToday[is.na(data1$RainToday)]<-"No"
+data1$RainTomorrow[is.na(data1$RainTomorrow)]<-"No"
+View(data1)
+
+
+colSums((is.na(data1)))
+
+
+#Preprocessing the Selected data
+data1=data1[order(data1$Date),]
+data1=head(data1,20000)
+View(data1)
+# library(VIM)
+
+colSums(is.na(data1))
+
+#Plotting ,visualization and Analysis
+#1.Bar-plot
+library(dplyr)
+var =readline(prompt = "Please Enter the Location : ")
+var
+dataplot <-filter(data1,Location == var)
+dataplot
+location_rainfall <-(dataplot$Rainfall)
+location_rainfall
+
+H <- paste("Histogram of Rainfall of ", var, sep =" ")
+B<-  paste("Bar Graph of Rainfall of ", var, sep =" ")
+P<-  paste("Piechart of  Rainfall of ", var, sep =" ")
+L<-  paste("Line Graph of  Rainfall of ", var, sep =" ")
+D<-  paste("Density Graph of  Rainfall of ", var, sep =" ")
+
+#1.Histogram
+hist(location_rainfall,
+     main=H,
+     xlab ="Rainfall",
+     border = "Yellow",
+     las=0,
+     col= "green",
+     breaks =12 #number of bins
+)
+#2.Bar Plot
+barplot(location_rainfall,
+        xlab="Date",
+        ylab="Rainfall",
+        main = B,
+        names.arg = dataplot$Date,
+        col="red",
+        border = "black",
+        xlim = c(1,100),
+)
+
+#4.Line graph
+plot(location_rainfall,
+     type = "o",  # p - points, l - lines ,o - points+lines 
+     xlab="Date ",
+     ylab = "Rainfall",
+     main = L,
+     col="purple",
+)
+
+#5.Density Graph
+
+d <- density(location_rainfall) # returns the density data
+plot(d,main = D)
+polygon(d, col="BLUE", border="BLACK")
+
+#Minimizing  the values of the data for clear understanding of the visualisations..
+location_rainfall=location_rainfall[50:100]
+location_rainfall
+Date_rainfall <-(dataplot$Date)
+Date_rainfall=Date_rainfall[50:100]
+Date_rainfall
+#1.Histogram
+hist(location_rainfall,
+     main=H,
+     xlab ="Rainfall",
+     border = "Yellow",
+     las=0,
+     col= "green",
+     breaks =12 #number of bins
+)
+#2.Bar Plot
+barplot(location_rainfall,
+        xlab="Date",
+        ylab="Rainfall",
+        main = B,
+        names.arg = Date_rainfall,
+        col="#9cf700",
+        border = "black",
+        xlim = c(1,50),
+)
+
+#4.Line graph
+ plot(location_rainfall,
+      type = "o",  # p - points, l - lines ,o - points+lines 
+      xlab="Date ",
+      ylab = "Rainfall",
+      main = L,
+      col="#f700ef",
+ )
+ 
+ #5.Density Graph
+ 
+ d <- density(location_rainfall) # returns the density data
+ plot(d,main = D)
+ polygon(d, col="#00f7ef", border="BLACK")
+ 
+
+
+
+#Analytics part in the project
+mintemprange=data1$MinTemp
+range(mintemprange)
+mintempbreaks=seq(-9,34,by=5)
+mintempbreaks_cut=cut(mintemprange,mintempbreaks,right=FALSE)
+mintempfreq=table(mintempbreaks_cut)
+mintempfreq
+mintempcumfreq=cumsum(mintempfreq)
+mintempcumfreq
+#Ogive Graph
+library(ggplot2)
+#lines(mintempbreaks_cut,mintempcumfreq0)
+# mintempgraph=c(0,cumsum(mintempcumfreq0))
+# plot(mintempbreaks,mintempcumfreq0,
+#       main="Min Temp Ogive Curve",
+#       xlab="Mintemp duration",
+#       ylab="Cummulative Min Temp")
+
+
+rainfall1=data1$Rainfall
+rainfall1
+rainrange=range(rainfall1)
+rainbreaks=seq(0,371,by=50)
+rainbreaks
+rainbreaks_cut=cut(rainfall1,rainbreaks,right=FALSE,left=FALSE)
+rainfreq=table(rainbreaks_cut)
+rainfreq
+raincumfreq=cumsum(rainfreq)
+raincumfreq
+raincumfreq0=c(0,cumsum(rainfreq))
+plot(rainbreaks,raincumfreq0,
+     main="Rainfall Ogive Curve",
+     xlab="Rainfall",
+     ylab="Cummulative Rainfall",
+     col="red")
+lines(rainbreaks,raincumfreq0,col="Orange")
+
+
+#Scatter Plot
+mintemp=data1$MinTemp
+Rain=data1$Rainfall
+head(cbind(mintemp,Rain))
+plot(mintemp,Rain,
+     xlab="Mintemp",
+     ylab="Rainfall",col="Blue")
+
+
+maxtemp=data1$MaxTemp
+head(cbind(Rain,maxtemp))
+plot(maxtemp,Rain,
+     xlab="Maxtemp",
+     ylab="Rainfall",col="Red")
+
+
+temp3pm=data1$Temp3pm
+head(cbind(Rain,temp3pm))
+plot(temp3pm,Rain,
+     xlab="Temp at 3 pm",
+     ylab="Rainfall",col="Violet")
+
+temp9am=data1$Temp9am
+head(cbind(Rain,temp9am))
+plot(temp3pm,Rain,
+     xlab="Temp at 9 am",
+     ylab="Rainfall",col="Orange")
+
+
+pressure3=data1$Pressure3pm
+head(Rain,pressure3)
+plot(pressure3,Rain,
+     xlab="Pressure3pm",
+     ylab="Rainfall",col="Green")
+
+
+# raintoday=data1$RainToday
+# head(raintoday,pressure3)
+# plot(pressure3,raintoday,
+#      xlab="Pressure3pm",
+#      ylab="Rainfall",col="Yellow")
+
+
+
+# maxtemprange=data1$MaxTemp
+# range(maxtemprange)
+# maxtempbreaks=seq(-3,47,by=5)
+# maxtempbreaks_cut=cut(maxtemprange,maxtempbreaks,right=FALSE)
+# maxtempfreq=table(maxtempbreaks_cut)
+# maxtempfreq
+
+#Statistical Measures
+mean(data1$Rainfall)
+median(data1$Rainfall)
+maxRainfall=max(data1$Rainfall)
+maxRainfall
+#highest rainfall occured
+highestRainfall=data1[order(-data1$Rainfall),c(1,2)]
+highestRainfall[1,1:2]
+quantile(data1$Rainfall)
+var(data1$Rainfall)
+sqrt(var(data1$Rainfall))
+IQR(data1$Rainfall)
+library(ggplot2)
+library(moments)
+sk=skewness(data1$Rainfall)
+sk
+if (sk <0) {
+        print('Negitive Skewness')
+} else if (sk>0 ) {
+        print('Positive Skewness')
+} else {
+        print('No Skewness')
+}
+ku=kurtosis(data1$Rainfall)
+ku
+if (ku<3){
+        print('PlatyKurtic')
+}else if(ku>3){
+        print('Leptokurtic')
+}else{
+        print('Mesokurtic')
+}
+boxplot(data1$Rainfall,xlab="Rainfall")
+qplot(Rainfall,WindGustDir, data = data1,xlab="Rainfall",ylab="WindDirection")
+qplot(Humidity3pm,Rainfall, data = data1,xlab="Humidity",ylab="Rainfall")
+qplot(Rainfall,WindGustDir, data = data1,geom="boxplot",xlab="Rainfall",ylab="WindDirection")
+
+#Covariance of all the variables
+
+cov(data1$Rainfall,data1$MinTemp)
+cov(data1$Rainfall,data1$MaxTemp)
+cov(data1$Rainfall,data1$WindSpeed3pm)
+cov(data1$Rainfall,data1$WindSpeed9am)
+cov(data1$Rainfall,data1$Humidity9am)
+cov(data1$Rainfall,data1$Humidity3pm)
+cov(data1$Rainfall,data1$Pressure9am)
+cov(data1$Rainfall,data1$Pressure3pm)
+cov(data1$Rainfall,data1$Temp9am)
+
+cov(data1$Rainfall,data1$Temp3pm)
+
+#Correlation b/w the variables
+library(ggpubr)
+cor.test(data1$Rainfall,data1$MinTemp)
+cor.test(data1$Rainfall,data1$MaxTemp)
+cor.test(data1$Rainfall,data1$WindSpeed3pm)
+cor.test(data1$Rainfall,data1$WindSpeed9am)
+cor.test(data1$Rainfall,data1$Humidity9am)
+cor.test(data1$Rainfall,data1$Humidity3pm)
+cor.test(data1$Rainfall,data1$Pressure9am)
+cor.test(data1$Rainfall,data1$Pressure3pm)
+cor.test(data1$Rainfall,data1$Temp9am)
+cor.test(data1$Rainfall,data1$Temp3pm)
+cor.test(data1$Rainfall,data1$MinTemp)
+#Plots
+ggplot(data1,aes(x=Rainfall,y=temp3pm))+
+  geom_point()+
+  stat_smooth()
+
+ggplot(data1,aes(x=Rainfall,y=pressure3))+
+  geom_point()+
+  stat_smooth()
+
+ggplot(data1,aes(x=Rainfall,y=Humidity3pm))+
+  geom_point()+
+  stat_smooth()
+
+ggplot(data1,aes(x=Rainfall,y=MinTemp))+
+  geom_point()+
+  stat_smooth()
+ggplot(data1,aes(x=Rainfall,y=WindSpeed9am))+
+  geom_point()+
+  stat_smooth()
+##Regression Line
+ggscatter(data1, x = "Rainfall", y = "MinTemp",add = "reg.line",conf.int = TRUE,add.params = list(color = "red",fill = "yellow")
+)+stat_cor(method = "pearson", label.x = 3, label.y = 30)
+
+ggscatter(data1, x = "Rainfall", y = "MaxTemp",add = "reg.line",conf.int = TRUE,add.params = list(color = "red",fill = "yellow")
+)+stat_cor(method = "pearson", label.x = 3, label.y = 30)
+
+ggscatter(data1, x = "Rainfall", y = "WindSpeed3pm",add = "reg.line",conf.int = TRUE,add.params = list(color = "red",fill = "yellow")
+)+stat_cor(method = "pearson", label.x = 3, label.y = 30)
+
+ggscatter(data1, x = "Rainfall", y = "WindSpeed9am",add = "reg.line",conf.int = TRUE,add.params = list(color = "red",fill = "yellow")
+)+stat_cor(method = "pearson", label.x = 3, label.y = 30)
+
+ggscatter(data1, x = "Rainfall", y = "Humidity9am",add = "reg.line",conf.int = TRUE,add.params = list(color = "red",fill = "yellow")
+)+stat_cor(method = "pearson", label.x = 3, label.y = 30)
+
+ggscatter(data1, x = "Rainfall", y = "Pressure3pm",add = "reg.line",conf.int = TRUE,add.params = list(color = "red",fill = "yellow")
+)+stat_cor(method = "pearson", label.x = 3, label.y = 30)
+
+ggscatter(data1, x = "Rainfall", y = "Pressure9am",add = "reg.line",conf.int = TRUE,add.params = list(color = "red",fill = "yellow")
+)+stat_cor(method = "pearson", label.x = 3, label.y = 30)
+
+ggscatter(data1, x = "Rainfall", y = "Temp9am",add = "reg.line",conf.int = TRUE,add.params = list(color = "red",fill = "yellow")
+)+stat_cor(method = "pearson", label.x = 3, label.y = 30)
+
+ggscatter(data1, x = "Rainfall", y = "Temp3pm",add = "reg.line",conf.int = TRUE,add.params = list(color = "red",fill = "yellow")
+)+stat_cor(method = "pearson", label.x = 3, label.y = 30)
+
+
+# ggscatter(data1, x = "Rainfall", y = "Temp3pm",
+#           add = "reg.line",                         
+#           conf.int = TRUE,                          
+#           color = "WindGustDir", palette = "jco",       
+#           shape = "WindGustDir"                             
+# )+
+#   stat_cor(aes(color = WindGustDir), label.x = 3)
+
+
+# ggscatter(data1, x = "Rainfall", y = "Temp9am",
+#           color = "WindGustDir", palette = "jco",
+#           shape = "WindGustDir",
+#           ellipse = TRUE)
+
+
+gghistogram(data1, x = "Rainfall", bins = 12, 
+            add = "mean",col="red")
+
+#ggecdf(data1, x = "Rainfall",col="Orange")
+
+ggqqplot(data1, x = "Rainfall",col="Yellow")
+
+
+ggboxplot(data1, y = "WindGustSpeed",
+          color = 27,
+          palette = c("#00AFBB"))
+
+
+
+#Regression Models
+model1=lm(Rainfall~pressure3,data=data1)
+model2=lm(Rainfall~Humidity3pm,data=data1)
+model3=lm(Rainfall~WindSpeed9am,data=data1)
+model4=lm(Rainfall~Temp9am,data=data1)
+model5=lm(Rainfall~mintemp,data=data1)
+model6=lm(Rainfall~WindGustSpeed,data=data1)
+model7=lm(Rainfall~WindGustDir,data=data1)
+
+summary(model1)
+summary(model2)
+summary(model3)
+summary(model4)
+summary(model5)
+summary(model6)
+summary(model7)
+
+
+#Heatmaps
+library(gplots)
+library(RColorBrewer)
+my_group <- as.numeric(as.factor(substr(rownames(data1), 1 , 1)))
+colSide <- brewer.pal(9, "Set1")[my_group]
+colMain <- colorRampPalette(brewer.pal(8, "Blues"))(25)
+heatmap(as.matrix(data1[4:100,3:5]), scale="column", col=colMain)
+#heatmap wind seep humidity
+heatmap(as.matrix(data1[4:100,3:5]))
+
+

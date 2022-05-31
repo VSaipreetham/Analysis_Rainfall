@@ -1,0 +1,220 @@
+setwd("C:/Users/Sai Preetham/Desktop/FDA_Project")
+rain=read.csv("RainfallPrediction.csv")
+View(rain)
+library("RCurl")
+library("rpart")
+library("rpart.plot")
+library("randomForest")
+library("FNN")
+library("dplyr")    
+library('repr')
+library('ggplot2')
+library("class")
+library("e1071")
+library("scales")  # for percentage scales
+
+
+rain <- rain[,2:23]
+
+# factor character-columns
+for (i in 1:ncol(rain)){
+  if(is.character(rain[1,i])){
+    rain[,i] = factor(rain[,i])
+  }
+}
+rain$MinTemp = replace(rain$MinTemp, is.na(rain$MinTemp), mean(rain$MinTemp, na.rm = TRUE))
+rain$MaxTemp = replace(rain$MaxTemp, is.na(rain$MaxTemp), mean(rain$MaxTemp, na.rm = TRUE))
+
+rain$Rainfall = replace(rain$Rainfall, is.na(rain$Rainfall), 0)
+
+rain$Evaporation = replace(rain$Evaporation, is.na(rain$Evaporation), 0)
+
+rain$Sunshine = replace(rain$Sunshine, is.na(rain$Sunshine), 0)
+
+levels(rain$WindGustDir) <- c(levels(rain$WindGustDir), "NOWIND")
+rain$WindGustDir[is.na(rain$WindGustDir)] <- 'NOWIND'
+
+rain$WindGustSpeed = replace(rain$WindGustSpeed, is.na(rain$WindGustSpeed), 0)
+
+levels(rain$WindDir9am) <- c(levels(rain$WindDir9am), "NOWIND")
+rain$WindDir9am[is.na(rain$WindDir9am)] <- 'NOWIND'
+levels(rain$WindDir3pm) <- c(levels(rain$WindDir3pm), "NOWIND")
+rain$WindDir3pm[is.na(rain$WindDir3pm)] <- 'NOWIND'
+
+rain$WindSpeed9am = replace(rain$WindSpeed9am, is.na(rain$WindSpeed9am), 0)
+rain$WindSpeed3pm = replace(rain$WindSpeed3pm, is.na(rain$WindSpeed3pm), 0)
+
+rain$Humidity9am = replace(rain$Humidity9am, is.na(rain$Humidity9am), mean(rain$Humidity9am, na.rm = TRUE))
+rain$Humidity3pm = replace(rain$Humidity3pm, is.na(rain$Humidity3pm), mean(rain$Humidity3pm, na.rm = TRUE))
+
+rain$Pressure9am = replace(rain$Pressure9am, is.na(rain$Pressure9am), mean(rain$Pressure9am, na.rm = TRUE))
+rain$Pressure3pm = replace(rain$Pressure3pm, is.na(rain$Pressure3pm), mean(rain$Pressure3pm, na.rm = TRUE))
+
+
+rain$Cloud9am = replace(rain$Cloud9am, is.na(rain$Cloud9am), 0)
+rain$Cloud3pm = replace(rain$Cloud3pm, is.na(rain$Cloud3pm), 0)
+
+rain$Temp9am = replace(rain$Temp9am, is.na(rain$Temp9am), mean(rain$Temp9am, na.rm = TRUE))
+rain$Temp3pm = replace(rain$Temp3pm, is.na(rain$Temp3pm), mean(rain$Temp3pm, na.rm = TRUE))
+
+rain <- rain[!is.na(rain$RainToday),]
+
+rain <- rain[!is.na(rain$RainTomorrow),]
+
+summary(rain)
+
+
+locations = unique(rain$Location)
+
+averageLocationRainfall = c()
+index = 1
+for (location in locations){
+  averageLocationRainfall[index] = round(mean(subset(rain, rain$Location == location)$Rainfall), 2)
+  index = index +1
+}
+
+# convert to dataframe
+locationRainfalldf = data.frame(locations, averageLocationRainfall, stringsAsFactors=FALSE)
+
+# graphs
+options(repr.plot.width = 15, repr.plot.height = 15)  # plot size
+
+#barplot(locationRainfalldf$averageLocationRainfall, 
+#        names.arg = locationRainfalldf$locations, 
+#        border = "steelblue",
+#        main = "Average rainfall by location",
+#        xlab = "rainfall(mm)",
+#        las=1, 
+#        horiz=TRUE)
+
+ggplot(data = locationRainfalldf, 
+       aes(x = locations, y = averageLocationRainfall),
+       stat='identity', 
+       position = 'dodge') + 
+  geom_col() + 
+  geom_text(aes(label = averageLocationRainfall), position = position_dodge(width=0.9), vjust=-0.25) +
+  xlab("Locations") + 
+  ylab("Average rainfall(mm)") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 18),
+        axis.text.y = element_text(size = 20),
+        axis.title.x = element_text(size = 30),
+        axis.title.y = element_text(size = 30))
+
+ggplot(data = rain) +
+  geom_point(mapping = aes(x = Pressure9am , y = Pressure3pm), alpha=0.3) +
+  ggtitle("Pressure9am and Pressure3pm")
+
+ggplot(rain, aes(x= Cloud9am,  group=RainToday)) + 
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") +
+  geom_text(aes( label = scales::percent(..prop..),
+                 y= ..prop.. ), stat= "count", vjust = -.5) +
+  labs(y = "Percent", fill="Cloud Level") +
+  facet_grid(~RainToday) +
+  scale_y_continuous(labels = scales::percent)
+
+NoNo <- percent(sum(rain$RainToday == "No" & rain$RainTomorrow == "No") / length(rain[,1]), accuracy = .001) 
+YesYes <- percent(sum(rain$RainToday == "Yes" & rain$RainTomorrow == "Yes") / length(rain[,1]), accuracy = .001) 
+NoYes <- percent(sum(rain$RainToday == "No" & rain$RainTomorrow == "Yes") / length(rain[,1]), accuracy = .001) 
+YesNo <- percent(sum(rain$RainToday == "Yes" & rain$RainTomorrow == "No") / length(rain[,1]), accuracy = .001)
+
+rainTodayTomorrow <- data.frame(
+  group = c("NoYes", "YesYes", "NoNo", "YesNo"),
+  value = c(NoYes, YesYes, NoNo, YesNo)
+)
+
+rainTodayTomorrow
+
+
+rain_plot5 = data.frame(rain)
+rain_plot5$Sunshine<-cut(rain_plot5$Sunshine, seq(0,16, 1), right=FALSE)
+
+ggplot(rain_plot5)+ 
+  geom_bar(mapping = aes(x= Sunshine, y= ..count.., fill = RainToday), 
+           stat = "count", position = "fill")+
+  labs(x = "Hours of sunshine", y="Percent")+
+  scale_y_continuous(labels = scales::percent_format())
+
+
+#Decision tree
+rain_DT<-data.frame(rain)
+
+num_samples = dim(rain_DT)[1]
+set.seed(123)
+sampling.rate = 0.8
+training <- sample(1:num_samples, sampling.rate * num_samples, replace=FALSE)
+trainingSet <- rain_DT[training, ]
+testing <- setdiff(1:num_samples,training)
+testingSet <- rain_DT[testing, ]
+
+#Fit a decision tree model using the training data
+decTreeModel <- rpart(RainTomorrow ~ .,data=trainingSet, method = "class")
+
+#Plot the decision tree model
+rpart.plot(decTreeModel)
+
+# Find cp value to prevent overfitting
+plotcp(decTreeModel)
+
+# Based on the cp plot, we choose cp value =0.018
+pruned_decTreeModel = prune(decTreeModel, cp=0.018)
+
+# Plot the pruned decision tree model
+rpart.plot(pruned_decTreeModel)
+
+
+#Predictions of Decision tree
+predictedLabels<-predict(pruned_decTreeModel, testingSet, type = "class")
+# Get the number of data points in the test set
+sizeTestSet = dim(testingSet)[1]
+# Get the number of data points that are classified
+error = sum(predictedLabels != testingSet$RainTomorrow)
+# Calculate the misclassification rate
+classification_rate = 1-(error/sizeTestSet)
+classification_rate
+
+
+# Get the data points that are misclassified
+IsWrong = (predictedLabels != testingSet$RainTomorrow)
+# Get the data points that are classified as Happy or Sad
+IsYes = (predictedLabels == 'Yes')
+IsNo = (predictedLabels == 'No')
+# Get the data points that are misclassified and are classified as Happy
+IsWrongAndYes = (IsWrong & IsYes)
+errorYes = sum(IsWrongAndYes)
+IsWrongAndNo = (IsWrong & IsNo)
+errorNo = sum(IsWrongAndNo)
+# Calculate the misclassification rate
+DT_misclassification_rate = (errorYes+errorNo)/sizeTestSet
+
+DT_misclassification_rate 
+
+# confusion matrix
+library(caret)
+DT_FN = confusionMatrix(predictedLabels, testingSet$RainTomorrow)
+
+DT_FN
+#Random Forest 
+RandForestModel <- randomForest(RainTomorrow ~ ., data = trainingSet, ntree=200, importance=TRUE)
+plot(RandForestModel)
+legend("top", colnames(RandForestModel$err.rate),fill=1:3)
+RandForestModel$confusion
+
+# Perform predictions for the testing set
+predictedLabels<-predict(RandForestModel, testingSet)
+# Get the number of data points in the test set
+sizeTestSet = dim(testingSet)[1]
+# Get the number of data points that are misclassified
+error = sum(predictedLabels != testingSet$RainTomorrow)
+# Calculate the misclassification rate
+RF_misclassification_rate = error/sizeTestSet
+RF_misclassification_rate
+importance(RandForestModel)
+varImpPlot(RandForestModel,type=1)
+
+# confusion matrix
+RF_FN = confusionMatrix(predictedLabels, testingSet$RainTomorrow)
+
+RF_FN
+
+rain_LR<-data.frame(rain)
+
